@@ -1,0 +1,6 @@
+django 
+scikit-learn
+pandas
+numpy
+pypdf2
+matplotlib
