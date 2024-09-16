@@ -29,6 +29,12 @@ ALLOWED_HOSTS = [
     'doctorai-0b3y.onrender.com',
 ]
 
+# trusted origins
+CSRF_TRUSTED_ORIGINS = [
+    'https://doctorai-0b3y.onrender.com',
+]
+
+
 
 # Application definition
 
