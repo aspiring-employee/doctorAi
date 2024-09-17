@@ -4,3 +4,10 @@ pandas
 numpy
 pypdf2
 matplotlib
+xgboost
+pytesseract
+pdf2image
+langchain
+langchain-core
+langchain-mistralai
+python-dotenv
