@@ -5,6 +5,7 @@ numpy
 pypdf2
 matplotlib
 xgboost
+catboost
 pytesseract
 pdf2image
 langchain
