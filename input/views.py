@@ -7,10 +7,7 @@ import numpy as np
 import pandas as pd
 from sklearn.model_selection import train_test_split
 from sklearn.preprocessing import StandardScaler
-from sklearn.neighbors import KNeighborsClassifier
-from sklearn.ensemble import RandomForestClassifier
-from sklearn.ensemble import GradientBoostingClassifier
-import xgboost as xgb
+from catboost import CatBoostClassifier
 from sklearn.metrics import accuracy_score
 import pytesseract
 from pdf2image import convert_from_path
@@ -148,52 +145,14 @@ def input(request):
         x_train_ss = ss.fit_transform(x_train)
         x_test_ss = ss.transform(x_test)
 
-        labels = []
-        accuracies = []
-
-        # knn classifier
-        KNN = KNeighborsClassifier(n_neighbors=13,metric="minkowski",p=2)
-        KNN.fit(x_train_ss,y_train)
-        y_pred = KNN.predict(x_test_ss)
+        #catboost
+        model = CatBoostClassifier(depth=6,iterations=30,learning_rate=0.1)
+        model.fit(x_test_ss,y_train)
+        y_pred=model.predict(x_test_ss)
         input_list = list(map(float,[values[x] for x in values.keys() if(values[x])!=-1]))
-        label = KNN.predict(ss.transform([input_list]))
-        labels.append(label)
-        accuracies.append(accuracy_score(y_test,y_pred))
-        # print(label)
-
-        # random forest
-        rf = RandomForestClassifier(n_estimators=100, random_state=42)
-        rf.fit(x_train_ss, y_train)
-        y_pred = rf.predict(x_test_ss)
-        input_list = list(map(float, [values[x] for x in values.keys() if values[x] != -1]))
-        label = rf.predict(ss.transform([input_list]))
-        labels.append(label)
-        accuracies.append(accuracy_score(y_test,y_pred))
-
-        # gb classifier
-        gbc = GradientBoostingClassifier(n_estimators=100, learning_rate=1.0, max_depth=1, random_state=42)
-        gbc.fit(x_train_ss, y_train)
-        y_pred = gbc.predict(x_test_ss)
-
-        input_list = list(map(float, [values[x] for x in values.keys() if values[x] != -1]))
-        label = gbc.predict(ss.transform([input_list]))
-        labels.append(label)
-        accuracies.append(accuracy_score(y_test,y_pred))
-
-        # xgb
-        xgb_model = xgb.XGBClassifier(use_label_encoder=False, eval_metric='mlogloss')
-        xgb_model.fit(x_train_ss, y_train)
-        y_pred = xgb_model.predict(x_test_ss)
-        input_list = list(map(float, [values[x] for x in values.keys() if values[x] != -1]))
-        label = xgb_model.predict(ss.transform([input_list]))
-        labels.append(label)
-        accuracies.append(accuracy_score(y_test,y_pred))
-
-        final_label = max(labels, key=labels.count)[0]
-        temp_acc = [accuracies[i] for i in range(len(accuracies)) if labels[i]==final_label]
-        final_acc = round((sum(temp_acc)/len(temp_acc)) * 100, 2)
+        final_label = model.predict(ss.transform([input_list]))
+        final_acc = accuracy_score(y_test,y_pred)
         
-        print(final_label)
         if(final_label==1):
             output="HAVE"
         else:
