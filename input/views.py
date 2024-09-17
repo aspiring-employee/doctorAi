@@ -68,7 +68,7 @@ def input(request):
         # file_name = 'your_pdf_file.pdf'
 
         # # Convert PDF to images
-        pytesseract.pytesseract.tesseract_cmd = '/usr/bin/tesseract'
+        pytesseract.pytesseract.tesseract_cmd = '/usr/local/bin/tesseract'
         pages = convert_from_path(file_name, 500)#, poppler_path = r"poppler-24.07.0/Library/bin")
         text = ""
         if pages:
