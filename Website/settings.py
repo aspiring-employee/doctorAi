@@ -26,6 +26,7 @@ SECRET_KEY = 'django-insecure-p$vpkzjtp3x$o98hi)dibzmzl2p!o94e4-f5r_%rg)b@ywqg-p
 DEBUG = True
 
 ALLOWED_HOSTS = [
+    '127.0.0.1',
     'doctorai-0b3y.onrender.com',
 ]
 
